@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "dev": "rspress dev --port 3000 --host 0.0.0.0",
+    "build": "rspress build",
+    "preview": "rspress preview"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "rspress": "^1.27.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  }
+}
