@@ -1,1 +1,207 @@
-# Endpoints
+---
+---
+
+import ListEndpoints from "../../src/components/Endpoints";
+
+# APIs
+
+---
+
+<ListEndpoints
+  items={[
+    {
+      id: "generate-template-main_v1",
+      method: "GET",
+      url: "/generate",
+    },
+    
+  ]}
+/>
+
+---
+
+#### Generate Template `main_v1`
+
+```http
+POST /generate
+```
+
+Generates a PDF using the specified template.
+
+- **Parameters**:
+
+  - `templateName` (required): The name of the template to use.
+  - `templateData` (required): The data to populate the template.
+  - `passwordProtected` (optional): If `true`, the PDF will be password protected.
+  - `params` (optional): Parameters to use for password combinations if the PDF is password protected.
+
+- **Example Request**:
+
+  ```sh
+  curl -X POST https://api.example.com/v1/generate \
+    -H "X-Api-Key: YOUR_API_KEY" \
+    -H "X-Client-Token: YOUR_CLIENT_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d '{
+          "templateName": "main_v1",
+          "templateData": {
+            "name": "John",
+            "email": "yqTnD@example.com"
+          },
+          "passwordProtected": true,
+          "params": {
+            "key": "secretNumber",
+            "value": 42
+          }
+        }'
+  ```
+
+- **Example Response**:
+  The response is a blob containing the generated PDF file.
+
+  - **Example Binary Response**:
+    ```pdf
+    %PDF-1.4
+    %����
+    1 0 obj
+    << /Type /Catalog /Pages 2 0 R >>
+    endobj
+    2 0 obj
+    << /Type /Pages /Count 1 /Kids [3 0 R] >>
+    endobj
+    3 0 obj
+    << /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Contents 4 0 R >>
+    endobj
+    4 0 obj
+    << /Length 55 >>
+    stream
+    0.57 w
+    0 G
+    BT
+    /F1 24 Tf
+    100 700 Td
+    (Hello, World!) Tj
+    ET
+    endstream
+    endobj
+    xref
+    0 5
+    0000000000 65535 f
+    0000000015 00000 n
+    0000000074 00000 n
+    0000000121 00000 n
+    0000000241 00000 n
+    trailer
+    << /Size 5 /Root 1 0 R >>
+    startxref
+    321
+    %%EOF
+    ```
+
+---
+
+#### Get List of Templates
+
+```http
+GET /templates
+```
+
+Retrieves a list of templates.
+
+- **Parameters**:
+
+  - `filetype` (optional): The type of file to retrieve, either `html` or `json`.
+
+- **Example Request**:
+
+  ```sh
+  curl -X GET https://api.example.com/v1/templates?filetype=html \
+    -H "X-Api-Key: YOUR_API_KEY" \
+    -H "X-Client-Token: YOUR_CLIENT_TOKEN" \
+  ```
+
+- **Example Response**:
+  ```json
+  {
+    "count": 2,
+    "list": ["main_v1.html", "main_v1.schema.json"]
+  }
+  ```
+
+---
+
+#### Create a Template
+
+```http
+POST /upload_template
+```
+
+Creates a new template file or replaces an existing one.
+
+- **Parameters**:
+
+  - `templateName` (required): The name of the template.
+  - `templateFile` (required): The file to upload.
+  - `validationSchema` (required): The schema to validate the data.
+
+- **Example Request**:
+
+  ```sh
+  curl -X POST https://api.example.com/v1/upload_template \
+    -H "X-Api-Key: YOUR_API_KEY" \
+    -H "X-Client-Token: YOUR_CLIENT_TOKEN" \
+    -H "Content-Type: multipart/form-data" \
+    -F "templateName=main_v1" \
+    -F "templateFile=@main_v1.html" \
+    -F "validationSchema=@main_v1.schema.json"
+  ```
+
+- **Example Response**:
+  ```json
+  {
+    "message": "Template uploaded successfully"
+  }
+  ```
+
+---
+
+### Error Handling
+
+Errors are returned using standard HTTP status codes.
+
+- **Example Error Response**:
+
+  ```json
+  {
+    "error": {
+      "message": "Invalid template data",
+      "type": "invalid_request_error",
+      "status": 400
+    }
+  }
+  ```
+
+- **Common Errors**:
+  - `400 Bad Request`: The request was unacceptable, often due to missing a required parameter or invalid data.
+  - `401 Unauthorized`: No valid API key provided.
+  - `404 Not Found`: The requested resource or template doesn't exist.
+  - `500 Internal Server Error`: Something went wrong on the server.
+
+---
+
+### Rate Limiting
+
+All API requests are subject to rate limits. The rate limit is `1000` requests per hour.
+
+- **Rate Limit Headers**:
+
+  - `X-RateLimit-Limit`: The maximum number of requests per hour.
+  - `X-RateLimit-Remaining`: The number of requests remaining in the current hour.
+  - `X-RateLimit-Reset`: The time at which the current rate limit window resets in UTC epoch seconds.
+
+- **Example Rate Limit Headers**:
+  ```http
+  X-RateLimit-Limit: 1000
+  X-RateLimit-Remaining: 999
+  X-RateLimit-Reset: 1609459200
+  ```

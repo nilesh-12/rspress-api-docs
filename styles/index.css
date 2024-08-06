@@ -1,0 +1,14 @@
+#endpoints-component {
+  display: flex;
+  gap: 10px;
+  background-color: var(--rp-code-block-bg);
+  color: var(--rp-code-block-color);
+}
+.method-post {
+  /* soft green */
+  color: #cc5555;
+}
+.method-get {
+  /* soft green */
+  color: #55cc66;
+}
