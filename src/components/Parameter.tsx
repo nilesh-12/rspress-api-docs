@@ -8,10 +8,13 @@ interface Props {
 export default function Parameter(props: Props) {
   return (
     <h4
+      // style={{ borderTop: "1px solid", borderTopColor: "rgba(60, 60, 60, 0.1)" }}
       data-testid="element-title"
       className="⚙ rs10 as1k as112 as19l as19m as14l as18 as14k as19n as19o as19p ⚙ejy77s"
     >
+      <hr style={{ marginBottom: 10 }} />
       <button
+        hidden
         data-testid="element-link"
         className="⚙ rs10 rs13  as11y as166 as19q as19r as17s as19s as11x as19t as19u as14 as114 as19v as19w as115 as19x ⚙nvg27c"
       >
